@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>QR Code Generator</h1>
+        <input type="text" id="text" placeholder="Enter text or URL">
+
+        <div class="settings">
+            <div>
+                <label for="size">Size</label>
+                <select id="size">
+                    <option value="200">200x200</option>
+                    <option value="300">300x300</option>
+                    <option value="400">400x400</option>
+                </select>
+            </div>
+            <div>
+                <label for="color">Foreground Color</label>
+                <input type="color" id="color" value="#000000">
+            </div>
+            <div>
+                <label for="bgColor">Background Color</label>
+                <input type="color" id="bgColor" value="#ffffff">
+            </div>
+        </div>
+        
+
+        <button onclick="generateQRCode()">Generate QR Code</button>
+        <div id="qrcode"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        function generateQRCode() {
+    const qrcodeContainer = document.getElementById('qrcode');
+    const text = document.getElementById('text').value;
+    const size = document.getElementById('size').value;
+    const color = document.getElementById('color').value;
+    const bgColor = document.getElementById('bgColor').value;
+
+    // Clear previous QR Code
+    qrcodeContainer.innerHTML = '';
+
+    if (text.trim() === '') {
+        alert('Please enter text or a URL');
+        return;
+    }
+
+    // Create a canvas element
+    const canvas = document.createElement('canvas');
+    qrcodeContainer.appendChild(canvas);
+
+    // Generate the QR Code
+    QRCode.toCanvas(canvas, text, {
+        width: parseInt(size),
+        color: {
+            dark: color, // Foreground color
+            light: bgColor // Background color
+        }
+    }, function (error) {
+        if (error) {
+            console.error(error);
+            alert('Error generating QR code');
+        }
+    });
+}
+
+    </script>
+</body>
+</html>
